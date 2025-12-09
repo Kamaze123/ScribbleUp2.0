@@ -1,0 +1,112 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.title>h1{
+    font-size: bold;
+    font-size: 50px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+ul{
+    list-style-position: inside;
+    text-align: center;
+    margin-right: 50px;
+    list-style: none;
+    text-align: center;
+}
+
+main{
+    flex:1;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    gap: 1075px;
+}
+
+.brand{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.brand>p{
+    margin-top: 15px;
+    font-size: 35px;
+    color: black;
+    font-family: Arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.brand>img{
+    height: 75px;
+    width: 75px;
+}
+
+.create{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.create>a{
+    font-family: Arial, sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 25px;
+    margin-top: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.create>a:hover{
+    color: rgb(0, 136, 255);
+}
+
+footer{
+    text-align: center;
+    width: 100%;
+}
+
+.article> li a{
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+}
+
+.article>li{
+    display: inline-block;
+    width: 500px;
+    border: 2px solid rgb(0, 136, 255);
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+}
+
+.article> li a:hover{
+    text-decoration: underline;
+    color: rgb(0, 136, 255);
+}
+
+.text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.text>p{
+    font-size: 25px;
+}

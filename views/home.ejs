@@ -1,0 +1,20 @@
+<%- include("partials/header.ejs") %>
+        <main>
+
+        <hr style="height: 2px; background-color: rgb(0, 0, 0); border: none; margin-top: -5px;">
+        <div class = "title"><h1>Blogs</h1></div>
+       <% if(blogLinks && blogLinks.length > 0){ %>
+        <ul>
+            <% blogLinks.forEach(file =>{  %>
+                <div class = "article"> 
+                <li><a href = "../blog/<%= file %>"> <%= file.replace(".html", "").replace(/_/g, " ") %></a></li>
+                </div>
+            <% })  %>
+        </ul>
+       <%}else{ %>
+            <div class = "text">
+            <p>No blogs written yet</p>
+            </div>
+       <%}%>
+        </main>
+<%- include("partials/footer.ejs") %>
