@@ -7,10 +7,29 @@ import fs from "fs";
 import path from "path";
 import pg from "pg";
 
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
+
+
+const db = new pg.Client({
+    user: "postgres",
+    host: "localhost",
+    port: 5432,
+    database: "blog",
+    password: "kamaze"
+});
+
+db.connect((err)=>{
+    if(err){
+        console.error("Error connecting to database", err);}
+    else{
+        console.log("Connected to database successfully");
+    }
+});
+
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json());
