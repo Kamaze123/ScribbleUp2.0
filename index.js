@@ -18,7 +18,7 @@ const db = new pg.Client({
     user: "postgres",
     host: "localhost",
     port: 5432,
-    database: "blog",
+    database: "scribbleup",
     password: "kamaze"
 });
 
@@ -30,16 +30,26 @@ db.connect((err)=>{
     }
 });
 
+/*db.query(`
+    CREATE TABLE IF NOT EXISTS blogs (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  )`
+).catch(err=>{
+    console.error("Error creating table", err);
+});*/
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json());
 app.set("view engine", "ejs");
 app.use("/blog", express.static(path.join(__dirname, "blog")));
-
 app.use(express.static('public'));
 
-app.get("/", (req, res)=>{
-    fs.readdir("blog", (err, files)=>{
+
+app.get("/", async (req, res)=>{
+    /*fs.readdir("blog", (err, files)=>{
             if(err){
                 return res.render("home", {blogLinks : []});
             }
@@ -47,7 +57,18 @@ app.get("/", (req, res)=>{
                 const blogLinks = files.filter(f => f.endsWith(".html"));
                 res.render("home", {blogLinks});
             }
-    });
+    });*/
+
+    try{
+        const result = await db.query('SELECT id, title, created_at FROM blog ORDER BY created_at DESC');
+        const blogs = result.rows;
+        console.log(blogs[0].title);
+        res.render("home", { blogLinks: blogs });
+        console.log("Data fetched successfully from database");
+    }catch(err){
+        console.error("Error fetching blogs from database", err);
+        res.render("home", { blogLinks: [] });
+    }
 });
 
 app.get("/create", (req, res)=>{
