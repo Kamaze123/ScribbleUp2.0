@@ -49,20 +49,10 @@ app.use(express.static('public'));
 
 
 app.get("/", async (req, res)=>{
-    /*fs.readdir("blog", (err, files)=>{
-            if(err){
-                return res.render("home", {blogLinks : []});
-            }
-            else{
-                const blogLinks = files.filter(f => f.endsWith(".html"));
-                res.render("home", {blogLinks});
-            }
-    });*/
-
+    
     try{
         const result = await db.query('SELECT id, title, created_at FROM blog ORDER BY created_at DESC');
         const blogs = result.rows;
-        console.log(blogs[0].title);
         res.render("home", { blogLinks: blogs });
         console.log("Data fetched successfully from database");
     }catch(err){
@@ -75,17 +65,17 @@ app.get("/create", (req, res)=>{
     res.render("create");
 });                   
 
-app.post("/submit", (req, res)=>{
+app.post("/submit", async (req, res)=>{
     const { title, content} = req.body;
-    const fileName = title.replace(/ /g, "_").trim() + ".html";
 
-    ejs.renderFile("views/file.ejs", { title, content}, (err, html)=>{
-        if(err){
-            return res.send("Error generating file");
-        } 
-        fs.writeFileSync(`blog/${fileName}`, html);
+    try{
+        await db.query('INSERT INTO blog (title, content) VALUES ($1, $2)', [title, content]);
+        console.log('Blog saved successfully to database');
         res.redirect("/");
-    });
+    }catch(err){
+        console.error('Error saving blog:', err);
+        res.send("Error saving blog");
+    }
 });
 
 app.listen(port, ()=>{
