@@ -82,6 +82,22 @@ app.listen(port, ()=>{
     console.log(`Listening on port ${3000}`);
 });
 
+app.get("/blog/:id", async (req, res)=>{
+    const blogId = req.params.id;
+    
+    try{
+        const result = await db.query('SELECT * FROM blog WHERE id = $1', [blogId]);
+        if (result.rows.length === 0) {
+            return res.status(404).send("Blog not found");
+        }
+        const blog = result.rows[0];
+        res.render("file", { title: blog.title, content: blog.content });
+    }catch(err){
+        console.error("Error fetching blog from database", err);
+        res.status(500).send("Error fetching blog");
+    }
+});
+
 app.delete("/blog/:title", (req, res)=>{
     const title = req.params.title.trim().replace(/ /g, "_") + ".html";
     const filePath = path.join(__dirname, "blog", title);
