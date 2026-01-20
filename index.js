@@ -113,40 +113,27 @@ app.delete("/blog/:id", async (req, res)=>{
     }
 });
 
-app.patch("/blog/:title", (req, res)=>{
-    const name = req.params.title.trim().replace(/ /g, "_") + ".html";
-    const filePath = path.join(__dirname, "blog", name);
-   
-    if(!fs.existsSync(filePath)){
-        return res.status(404).send("Blog not found");
+app.patch("/blog/:id", async (req, res)=>{
+    const { id } = req.params;
+    const { title, content } = req.body;
+
+    try{
+        const result = await db.query(
+        `UPDATE blog
+        SET title = COALESCE($1, title),
+           content = COALESCE($2, content)
+       WHERE id = $3`,
+      [title, content, id]
+    );
+
+        if (result.rowCount === 0) {
+            return res.status(404).send("Blog not found");
+        }
+
+        res.send("Blog updated successfully");
+    }catch(err){
+        console.error("Error updating blog:", err);
+        res.status(500).send("Error updating blog");
     }
 
-    const newContent = req.body.content;
-    const newTitle = req.body.title;
-    let updatedHTML;
-    
-    fs.readFile(filePath, "utf-8", (err, data)=>{
-        if(err) return res.status(500).send("Error reading file");
-
-        updatedHTML = data;
-
-        if(newTitle){
-            updatedHTML = updatedHTML.replace(
-                /<div id = "title">([\s\S]*?)<\/div>/,
-                `<div id = "title"><h1>${newTitle}</h1></div>`
-            );
-        }
-
-        if(newContent){
-            updatedHTML = updatedHTML.replace(
-                /<div id = "content">([\s\S]*?)<\/div>/,
-                `<div id = "content"><p>${newContent}</p></div>`
-            );
-        }
-        
-        fs.writeFile(filePath, updatedHTML, (err)=>{
-            if(err) return res.status(500).send("Error updating file");
-            res.send("Blog updated successfully");
-        });
-    });
 });
