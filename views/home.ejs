@@ -5,9 +5,9 @@
         <div class = "title"><h1>Blogs</h1></div>
        <% if(blogLinks && blogLinks.length > 0){ %>
         <ul>
-            <% blogLinks.forEach(file =>{  %>
+            <% blogLinks.forEach(blog =>{  %>
                 <div class = "article"> 
-                <li><a href = "../blog/<%= file %>"> <%= file.replace(".html", "").replace(/_/g, " ") %></a></li>
+                <li><a href = "../blog/<%= blog.id %>"> <%= blog.title %></a></li>
                 </div>
             <% })  %>
         </ul>
