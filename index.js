@@ -98,18 +98,19 @@ app.get("/blog/:id", async (req, res)=>{
     }
 });
 
-app.delete("/blog/:title", (req, res)=>{
-    const title = req.params.title.trim().replace(/ /g, "_") + ".html";
-    const filePath = path.join(__dirname, "blog", title);
+app.delete("/blog/:id", async (req, res)=>{
+    const blogId = req.params.id;
 
-    if(!fs.existsSync(filePath)){
-        return res.status(404).send("Blog not found");
-    }
-
-    fs.unlink(filePath, (err)=>{
-        if(err) return res.status(500).send("Error deleting blog");
+    try{
+        const result = await db.query('DELETE FROM blog WHERE id = $1', [blogId]);
+        if (result.rowCount === 0) {
+            return res.status(404).send("Blog not found");
+        }
         res.send("Blog deleted successfully");
-    });
+    }catch(err){
+        console.error("Error deleting blog from database", err);
+        res.status(500).send("Error deleting blog");
+    }
 });
 
 app.patch("/blog/:title", (req, res)=>{
