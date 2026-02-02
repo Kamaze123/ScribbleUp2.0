@@ -51,7 +51,7 @@ app.use(express.static('public'));
 app.get("/", async (req, res)=>{
     
     try{
-        const result = await db.query('SELECT id, title, created_at FROM blog ORDER BY created_at DESC');
+        const result = await db.query('SELECT id, title, content, created_at FROM blog ORDER BY created_at DESC');
         const blogs = result.rows;
         res.render("home", { blogLinks: blogs });
         console.log("Data fetched successfully from database");

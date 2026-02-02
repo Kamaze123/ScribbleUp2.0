@@ -72,3 +72,77 @@ nav {
 .create-btn:hover {
   transform: translateY(-1px);
 }
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: #fff;
+  color: #111;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+.divider {
+  height: 2px;
+  background: #000;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+.blog-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.blog-card {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.blog-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.blog-excerpt {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.blog-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.blog-meta .date {
+  color: #777;
+}
+
+.read-more {
+  text-decoration: none;
+  color: #000000;
+  font-weight: 500;
+}
+
+.read-more:hover {
+  text-decoration: underline;
+}
+
+.empty {
+  text-align: center;
+  color: #666;
+  margin-top: 40px;
+}
