@@ -6,13 +6,14 @@ import ejs from "ejs";
 import fs from "fs";
 import path from "path";
 import pg from "pg";
-
+import methodOverride from "method-override";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
 
+app.use(methodOverride('_method'));
 
 const db = new pg.Client({
     user: "postgres",
@@ -54,7 +55,6 @@ app.get("/", async (req, res)=>{
         const result = await db.query('SELECT id, title, content, created_at FROM blog ORDER BY created_at DESC');
         const blogs = result.rows;
         res.render("home", { blogLinks: blogs });
-        console.log("Data fetched successfully from database");
     }catch(err){
         console.error("Error fetching blogs from database", err);
         res.render("home", { blogLinks: [] });
@@ -106,7 +106,7 @@ app.delete("/blog/:id", async (req, res)=>{
         if (result.rowCount === 0) {
             return res.status(404).send("Blog not found");
         }
-        res.send("Blog deleted successfully");
+        res.redirect("/");
     }catch(err){
         console.error("Error deleting blog from database", err);
         res.status(500).send("Error deleting blog");

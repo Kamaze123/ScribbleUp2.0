@@ -26,6 +26,24 @@
             <a href="/blog/<%= blog.id %>" class="read-more">
               Read →
             </a>
+
+            <a href="/blog/<%= blog.id %>/edit" class="edit-btn">
+              Edit
+            </a>
+
+            <form
+              method="POST"
+              action="/blog/<%= blog.id %>?_method=DELETE"
+              class="delete-form"
+            >
+            <button
+              type="submit"
+              class="delete-btn"
+              onclick="return confirm('Delete this blog permanently?')"
+            >
+        Delete
+      </button>
+    </form>
           </div>
 
         </article>
