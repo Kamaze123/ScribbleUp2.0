@@ -1,17 +1,31 @@
-<!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel = "stylesheet" href = "/styles/style3.css">
-        <title>Blog</title> 
-        
-    </head>
+<%- include("partials/header.ejs") %>
 
-    <body>
-        <div class = "box">
-        <div id = "title"><h1><%= title %></h1></div>
-        <div id = "content"><p><%= content %></p></div>
-        </div>
-    </body>
-</html>
+<main class="container blog-page">
+
+  <article class="blog-full">
+
+    <h1 class="blog-full-title">
+      <%= title %>
+    </h1>
+
+    <p class="blog-full-date">
+      <%= new Date(created).toDateString() %>
+    </p>
+
+    <div class="blog-full-content">
+      <%- content.replace(/\n/g, "<br>") %>
+    </div>
+
+    <div class="blog-full-actions">
+      <a href="/" class="back-link">← Back to blogs</a>
+
+      <a href="/blog/<%= blogId %>/edit" class="edit-btn">
+        Edit
+      </a>
+    </div>
+
+  </article>
+
+</main>
+
+<%- include("partials/footer.ejs") %>

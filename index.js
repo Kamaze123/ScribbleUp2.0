@@ -91,10 +91,29 @@ app.get("/blog/:id", async (req, res)=>{
             return res.status(404).send("Blog not found");
         }
         const blog = result.rows[0];
-        res.render("file", { title: blog.title, content: blog.content });
+        console.log(blog);
+        res.render("file", { title: blog.title, content: blog.content, created : blog.created_at, blogId : blog.id});
     }catch(err){
         console.error("Error fetching blog from database", err);
         res.status(500).send("Error fetching blog");
+    }
+});
+
+app.get("/blog/:id/edit", async (req, res)=>{
+    const id = req.params.id;
+    try{
+        const result = await db.query(
+            "SELECT id, title, content FROM blog WHERE id = $1",[id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).send("Blog not found");
+        }
+
+        res.render("edit", { blog: result.rows[0] });
+    }catch(err){
+        console.error("Error fetching blog for edit:", err);
+        res.status(500).send("Error fetching blog for edit");
     }
 });
 
@@ -130,7 +149,7 @@ app.patch("/blog/:id", async (req, res)=>{
             return res.status(404).send("Blog not found");
         }
 
-        res.send("Blog updated successfully");
+        res.redirect("/");
     }catch(err){
         console.error("Error updating blog:", err);
         res.status(500).send("Error updating blog");

@@ -197,3 +197,44 @@ body {
   margin: auto;
   padding: 20px;
 }
+
+/* Style for blog content page */
+
+.blog-page {
+  max-width: 800px;
+}
+
+.blog-full-title {
+  font-size: 42px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.blog-full-date {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.blog-full-content {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #222;
+  margin-bottom: 40px;
+}
+
+.blog-full-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-link {
+  text-decoration: none;
+  font-size: 14px;
+  color: #000;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
