@@ -1,20 +1,58 @@
 <%- include("partials/header.ejs") %>
-        <main>
 
-        <hr style="height: 2px; background-color: rgb(0, 0, 0); border: none; margin-top: -5px;">
-        <div class = "title"><h1>Blogs</h1></div>
-       <% if(blogLinks && blogLinks.length > 0){ %>
-        <ul>
-            <% blogLinks.forEach(blog =>{  %>
-                <div class = "article"> 
-                <li><a href = "../blog/<%= blog.id %>"> <%= blog.title %></a></li>
-                </div>
-            <% })  %>
-        </ul>
-       <%}else{ %>
-            <div class = "text">
-            <p>No blogs written yet</p>
-            </div>
-       <%}%>
-        </main>
+<main class="container">
+
+  <hr class="divider">
+  <h1 class="page-title">Blogs</h1>
+
+  <% if (blogLinks && blogLinks.length > 0) { %>
+    <div class="blog-list">
+      <% blogLinks.forEach(blog => { %>
+        <article class="blog-card">
+
+          <h2 class="blog-title"><%= blog.title %></h2>
+
+          <p class="blog-excerpt">
+            <%= blog.content && blog.content.length > 120
+                  ? blog.content.substring(0, 120) + "..."
+                  : (blog.content || "No content available") %>
+          </p>
+
+          <div class="blog-meta">
+            <span class="date">
+              <%= new Date(blog.created_at).toDateString() %>
+            </span>
+
+            <a href="/blog/<%= blog.id %>" class="read-more">
+              Read →
+            </a>
+
+            <a href="/blog/<%= blog.id %>/edit" class="edit-btn">
+              Edit
+            </a>
+
+            <form
+              method="POST"
+              action="/blog/<%= blog.id %>?_method=DELETE"
+              class="delete-form"
+            >
+            <button
+              type="submit"
+              class="delete-btn"
+              onclick="return confirm('Delete this blog permanently?')"
+            >
+        Delete
+      </button>
+    </form>
+          </div>
+
+        </article>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="empty">No blogs written yet</p>
+  <% } %>
+
+</main>
+
 <%- include("partials/footer.ejs") %>

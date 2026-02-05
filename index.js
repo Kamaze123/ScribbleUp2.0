@@ -6,13 +6,14 @@ import ejs from "ejs";
 import fs from "fs";
 import path from "path";
 import pg from "pg";
-
+import methodOverride from "method-override";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const port = 3000;
 
+app.use(methodOverride('_method'));
 
 const db = new pg.Client({
     user: "postgres",
@@ -51,10 +52,9 @@ app.use(express.static('public'));
 app.get("/", async (req, res)=>{
     
     try{
-        const result = await db.query('SELECT id, title, created_at FROM blog ORDER BY created_at DESC');
+        const result = await db.query('SELECT id, title, content, created_at FROM blog ORDER BY created_at DESC');
         const blogs = result.rows;
         res.render("home", { blogLinks: blogs });
-        console.log("Data fetched successfully from database");
     }catch(err){
         console.error("Error fetching blogs from database", err);
         res.render("home", { blogLinks: [] });
@@ -91,10 +91,29 @@ app.get("/blog/:id", async (req, res)=>{
             return res.status(404).send("Blog not found");
         }
         const blog = result.rows[0];
-        res.render("file", { title: blog.title, content: blog.content });
+        console.log(blog);
+        res.render("file", { title: blog.title, content: blog.content, created : blog.created_at, blogId : blog.id});
     }catch(err){
         console.error("Error fetching blog from database", err);
         res.status(500).send("Error fetching blog");
+    }
+});
+
+app.get("/blog/:id/edit", async (req, res)=>{
+    const id = req.params.id;
+    try{
+        const result = await db.query(
+            "SELECT id, title, content FROM blog WHERE id = $1",[id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).send("Blog not found");
+        }
+
+        res.render("edit", { blog: result.rows[0] });
+    }catch(err){
+        console.error("Error fetching blog for edit:", err);
+        res.status(500).send("Error fetching blog for edit");
     }
 });
 
@@ -106,7 +125,7 @@ app.delete("/blog/:id", async (req, res)=>{
         if (result.rowCount === 0) {
             return res.status(404).send("Blog not found");
         }
-        res.send("Blog deleted successfully");
+        res.redirect("/");
     }catch(err){
         console.error("Error deleting blog from database", err);
         res.status(500).send("Error deleting blog");
@@ -130,7 +149,7 @@ app.patch("/blog/:id", async (req, res)=>{
             return res.status(404).send("Blog not found");
         }
 
-        res.send("Blog updated successfully");
+        res.redirect("/");
     }catch(err){
         console.error("Error updating blog:", err);
         res.status(500).send("Error updating blog");
