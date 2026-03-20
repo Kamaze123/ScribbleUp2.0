@@ -2,6 +2,12 @@
 
 Simple blog platform built with Node.js, Express and EJS.
 
+## Live Demo
+
+- **Website:** [https://scribbleup.onrender.com]
+
+
+
 ## Features
 - Create, read, edit and delete blog posts.
 - Server-rendered views with EJS ([views/](views/)).
