@@ -7,6 +7,7 @@ import fs from "fs";
 import path from "path";
 import pg from "pg";
 import methodOverride from "method-override";
+import dotenv from "dotenv";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -16,11 +17,11 @@ const port = 3000;
 app.use(methodOverride('_method'));
 
 const db = new pg.Client({
-    user: "postgres",
-    host: "localhost",
-    port: 5432,
-    database: "scribbleup",
-    password: "kamaze"
+    user: process.env.PG_USER,
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    database: process.env.PG_DATABASE,
+    password: process.env.PG_PASSWORD
 });
 
 db.connect((err)=>{
@@ -30,17 +31,6 @@ db.connect((err)=>{
         console.log("Connected to database successfully");
     }
 });
-
-/*db.query(`
-    CREATE TABLE IF NOT EXISTS blogs (
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        content TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  )`
-).catch(err=>{
-    console.error("Error creating table", err);
-});*/
 
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(express.json());
