@@ -20,3 +20,15 @@ h1{
     box-sizing: border-box;
 }
 
+@media (max-width: 768px) {
+  h1 {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 28px;
+    margin: 10px;
+  }
+}
