@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel = "stylesheet" href = "/styles/style2.css">
-        <title>Edit</title>
-    </head>
+<%- include("partials/header.ejs") %>
 
-    <body>
-        <form
-            action="/blog/<%= blog.id %>?_method=PATCH"
-            method="POST"
-            class="post-form"
-        >
+<main class="container">
+    <form
+        action="/blog/<%= blog.id %>?_method=PATCH"
+        method="POST"
+        class="post-form"
+    >
         <h2>Edit your blog</h2>
 
         <label for="title">Title</label>
@@ -29,10 +22,10 @@
             name="content"
             id="content"
             required
-            ><%= blog.content %>
-        </textarea>
+        ><%= blog.content %></textarea>
 
         <button type="submit">Update</button>
-  </form>
-    </body>
-</html>
+    </form>
+</main>
+
+<%- include("partials/footer.ejs") %>
