@@ -59,6 +59,36 @@
     background: rgb(0, 136, 255);
 }
 
+/* Error message */
+.form-error {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* "Don't have an account?" link below form */
+.form-footer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-footer a {
+  color: rgb(0, 136, 255);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
 /* Tablet */
 @media (max-width: 768px) {
   .post-form {

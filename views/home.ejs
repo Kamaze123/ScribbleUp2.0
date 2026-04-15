@@ -26,7 +26,7 @@
             <a href="/blog/<%= blog.id %>" class="read-more">
               Read →
             </a>
-            <%  if(user && (user.role === 'admin' || user.role === 'editor' || user.id === blogUserId)){ %>
+            <%  if(user && (user.role === 'admin' || user.role === 'editor' || user.id === blog.user_id)){ %>
             <a href="/blog/<%= blog.id %>/edit" class="edit-btn">
               Edit
             </a>

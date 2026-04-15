@@ -16,19 +16,9 @@ import connectPgSimple from "connect-pg-simple";
 
 dotenv.config();
 
-const PgSession = connectPgSimple(session);
+const app = express();
 
-app.use(session({
-  store: new PgSession({
-    pool,                       
-    tableName: "session",        
-    createTableIfMissing: true,
-  }),
-  secret: process.env.SESSION_SECRET || "changeme",
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, //7days login session
-}));
+const PgSession = connectPgSimple(session);
 
 const { Pool } = pg;
 
@@ -41,6 +31,7 @@ const pool = new Pool({
     max : 20,
 });
 
+
 pool.connect((err)=>{
     if(err){
         console.error("Error connecting to database", err);}
@@ -48,6 +39,18 @@ pool.connect((err)=>{
         console.log("Connected to database successfully");
     }
 });
+
+app.use(session({
+  store: new PgSession({
+    pool,                       
+    tableName: "session",        
+    createTableIfMissing: true,
+  }),
+  secret: process.env.SESSION_SECRET || "changeme",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 7 * 24 * 60 * 60 * 1000 }, //7days login session
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -100,7 +103,6 @@ function requireRole(...roles) {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(methodOverride('_method'));
@@ -114,11 +116,11 @@ app.use(express.static('public'));
 app.get("/", async (req, res)=>{
     
     try{
-        const result = await pool.query('SELECT id, title, content, created_at FROM blog ORDER BY created_at DESC');
+        const result = await pool.query('SELECT id, title, content, created_at, user_id FROM blog ORDER BY created_at DESC');
         const blogs = result.rows;
         res.render("home", { blogLinks: blogs });
     }catch(err){
-        console.error("Error fetching blogs from database", err);
+        console.error("Error fetching blogs from database", err); 
         res.render("home", { blogLinks: [] });
     }
 });
@@ -184,7 +186,7 @@ app.get("/blog/:id", async (req, res)=>{
         }
         const blog = result.rows[0];
         console.log(blog);
-        res.render("file", { title: blog.title, content: blog.content, created : blog.created_at, blogId : blog.id});
+        res.render("file", { title: blog.title, content: blog.content, created : blog.created_at, blogId : blog.id, blogUserId: blog.user_id});
     }catch(err){
         console.error("Error fetching blog from database", err);
         res.status(500).send("Error fetching blog");

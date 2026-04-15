@@ -96,7 +96,55 @@ body {
   color: #111;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
+.nav-divider {
+  color: #ccc;
+  font-size: 16px;
+}
+
+.nav-user {
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+.nav-role {
+  color: #888;
+  font-weight: 400;
+}
+
+/* Logout button — looks like a link, same as create-btn */
+.nav-link-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  padding: 6px 2px;
+  position: relative;
+  font-family: inherit;
+}
+
+.nav-link-btn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background-color: #111;
+  transition: width 0.3s ease;
+}
+
+.nav-link-btn:hover::after {
+  width: 100%;
+}
 
 .divider {
   height: 2px;
@@ -260,6 +308,23 @@ body {
   .blog-full-content {
     font-size: 16px;
   }
+
+  .nav-right {
+    gap: 12px;
+  }
+
+  .nav-user {
+    font-size: 13px;
+  }
+
+  .nav-link-btn,
+  .create-btn {
+    font-size: 15px;
+  }
+
+  .nav-divider {
+    font-size: 14px;
+  }
 }
 
 /* Mobile (max-width: 480px) */
@@ -303,5 +368,20 @@ body {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+
+  .nav-right {
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav-user {
+    font-size: 12px;
+  }
+
+  .nav-link-btn,
+  .create-btn {
+    font-size: 14px;
   }
 }
