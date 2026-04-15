@@ -1,23 +1,36 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel = "stylesheet" href = "/styles/style1.css">
-        <link rel="stylesheet" href="/styles/style2.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
-        <title>ScribbleUp</title>
-    </head>
-    <body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles/style1.css">
+  <link rel="stylesheet" href="/styles/style2.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+  <title>ScribbleUp</title>
+</head>
+<body>
+<header class="navbar">
+  <div class="logo">ScribbleUp</div>
+  <nav class="nav-right">
 
-    <header class="navbar">
-        <div class="logo">ScribbleUp</div>
-        <nav>
-            <a href="/create" class="create-btn">
-            <span class="icon">✏️</span> Create
-            </a>
-        </nav>
-    </header>
-    </body>
+    <% if (user) { %>
+      <a href="/create" class="create-btn">
+        <span class="icon">✏️</span> Create
+      </a>
+      <span class="nav-divider">|</span>
+      <span class="nav-user">
+        <%= user.username %> <span class="nav-role">(<%= user.role %>)</span>
+      </span>
+      <form action="/logout" method="POST" style="display:inline">
+        <button type="submit" class="nav-link-btn">Logout</button>
+      </form>
+    <% } else { %>
+      <a href="/login" class="create-btn">Login</a>
+      <span class="nav-divider">|</span>
+      <a href="/register" class="create-btn">Register</a>
+    <% } %>
+
+  </nav>
+</header>
