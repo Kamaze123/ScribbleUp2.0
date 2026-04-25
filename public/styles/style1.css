@@ -248,6 +248,23 @@ body {
 
 /* Style for blog content page */
 
+.meta-sep{
+  color : #ccc;
+  margin : 0 4px;
+}
+
+.blog-author{
+  color: #4f4f4f;
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 400;
+  max-width: 120px;          /* cap the width */
+  white-space: nowrap;       /* keep it one line */
+  overflow: hidden;          /* hide overflow */
+  text-overflow: ellipsis;   /* add ... at the end */
+  vertical-align: middle;
+}
+
 .blog-page {
   max-width: 800px;
 }
@@ -286,6 +303,7 @@ body {
 .back-link:hover {
   text-decoration: underline;
 }
+
 
 /* Tablet (max-width: 768px) */
 @media (max-width: 768px) {
@@ -350,6 +368,14 @@ body {
   .blog-meta {
     flex-wrap: wrap;
     gap: 8px;
+  }
+
+  .date {
+    width: 100%;   /* pushes actions to next line */
+  }
+
+  .blog-author {
+    max-width: 150px;  /* little more room on its own line */
   }
 
   .blog-full-title {

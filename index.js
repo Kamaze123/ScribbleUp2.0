@@ -116,7 +116,7 @@ app.use(express.static('public'));
 app.get("/", async (req, res)=>{
     
     try{
-        const result = await pool.query('SELECT id, title, content, created_at, user_id FROM blog ORDER BY created_at DESC');
+        const result = await pool.query('SELECT id, title, content, created_at, user_id, created_by FROM blog ORDER BY created_at DESC');
         const blogs = result.rows;
         res.render("home", { blogLinks: blogs });
     }catch(err){
