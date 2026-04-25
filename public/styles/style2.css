@@ -1,3 +1,12 @@
+.toggle-password svg {
+  stroke: #666666;
+  transition: stroke 0.2s;
+}
+
+.toggle-password:hover svg {
+  stroke: rgb(0, 136, 255);
+}
+
 .post-form{
     max-width: 600px;
     background: #fffffff4;
@@ -59,11 +68,83 @@
     background: rgb(0, 136, 255);
 }
 
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom : 15px;
+}
+
+.password-wrapper input {
+  margin-bottom: 0 !important;
+  padding-right: 48px; /* room for the button */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.toggle-password:hover {
+  background: transparent !important;
+  color: rgb(68, 143, 255);
+}
+
+/* Error message */
+.form-error {
+  background: #fdecea;
+  color: #c0392b;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* "Don't have an account?" link below form */
+.form-footer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #555;
+}
+
+.form-footer a {
+  color: rgb(0, 136, 255);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
 /* Tablet */
 @media (max-width: 768px) {
   .post-form {
     margin: 24px auto;
     padding: 24px 20px;
+  }
+
+    .password-wrapper input {
+    padding-right: 44px;
+  }
+  .toggle-password svg {
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -74,19 +155,26 @@
     padding: 20px 16px;
     width: auto;
   }
-
   .post-form h2 {
     font-size: 20px;
   }
-
   .post-form input,
   .post-form textarea {
     font-size: 15px;
     padding: 10px;
   }
-
   .post-form button {
     font-size: 16px;
     padding: 10px;
+  }
+  .password-wrapper input {
+    padding-right: 40px;
+  }
+  .toggle-password {
+    right: 10px;
+  }
+  .toggle-password svg {
+    width: 16px;
+    height: 16px;
   }
 }

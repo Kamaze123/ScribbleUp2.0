@@ -18,11 +18,17 @@
 
     <div class="blog-full-actions">
       <a href="/" class="back-link">← Back to blogs</a>
+    
 
-      <a href="/blog/<%= blogId %>/edit" class="edit-btn">
-        Edit
-      </a>
-    </div>
+    <% if (user && (user.role === 'admin' || user.role === 'editor' || user.id === blogUserId)) { %>
+        <a href="/blog/<%= blogId %>/edit" class="edit-btn">Edit</a>
+        <form method="POST" action="/blog/<%= blogId %>?_method=DELETE" style="display:inline">
+          <button type="submit" class="delete-btn" 
+            onclick="return confirm('Delete this blog permanently?')">Delete</button>
+        </form>
+      <% } %>
+
+      </div>
 
   </article>
 

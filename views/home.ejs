@@ -21,12 +21,14 @@
           <div class="blog-meta">
             <span class="date">
               <%= new Date(blog.created_at).toDateString() %>
+              <span class="meta-sep">—</span>
+              <span class="blog-author">by <%= blog.created_by %></span>
             </span>
 
             <a href="/blog/<%= blog.id %>" class="read-more">
               Read →
             </a>
-
+            <%  if(user && (user.role === 'admin' || user.role === 'editor' || user.id === blog.user_id)){ %>
             <a href="/blog/<%= blog.id %>/edit" class="edit-btn">
               Edit
             </a>
@@ -44,6 +46,7 @@
         Delete
       </button>
     </form>
+      <% } %>
           </div>
 
         </article>
