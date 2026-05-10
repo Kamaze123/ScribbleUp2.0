@@ -13,6 +13,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 import connectPgSimple from "connect-pg-simple";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 dotenv.config();
 
@@ -66,6 +67,52 @@ passport.use(new LocalStrategy(
       const match = await bcrypt.compare(password, user.password_hash);
       if (!match) return done(null, false, { message: "Wrong password" });
       return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }
+));
+
+passport.use(new GoogleStrategy(
+  {
+    clientID:     process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL:  "/auth/google/callback",
+  },
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      const email    = profile.emails[0].value;
+      const googleId = profile.id;
+
+      // 1. Already linked? Just log in
+      const linked = await pool.query(
+        "SELECT user_id FROM oauth_accounts WHERE provider = 'google' AND provider_id = $1",
+        [googleId]
+      );
+      if (linked.rows.length > 0) {
+        const user = await pool.query("SELECT * FROM users WHERE id = $1", [linked.rows[0].user_id]);
+        return done(null, user.rows[0]);
+      }
+
+      // 2. Email matches an existing user? Link and log in
+      let user = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+
+      // 3. No user at all? Create one (no password needed)
+      if (user.rows.length === 0) {
+        const username = profile.displayName.replace(/\s+/g, "_").toLowerCase() + "_" + profile.id.slice(0, 5);
+        user = await pool.query(
+          "INSERT INTO users (username, email, role) VALUES ($1, $2, 'author') RETURNING *",
+          [username, email]
+        );
+      }
+
+      // 4. Link the OAuth account
+      await pool.query(
+        "INSERT INTO oauth_accounts (user_id, provider, provider_id) VALUES ($1, 'google', $2) ON CONFLICT DO NOTHING",
+        [user.rows[0].id, googleId]
+      );
+
+      return done(null, user.rows[0]);
     } catch (err) {
       return done(err);
     }
@@ -219,7 +266,7 @@ app.delete("/blog/:id", requireAuth, async (req, res)=>{
   res.redirect("/");
 });
 
-app.patch("/blog/:id", async (req, res)=>{
+app.patch("/blog/:id", requireAuth, async (req, res)=>{
     const { id } = req.params;
     const { title, content } = req.body;
 
@@ -243,3 +290,12 @@ app.patch("/blog/:id", async (req, res)=>{
     }
 
 });
+
+app.get("/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+app.get("/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => res.redirect("/")
+);

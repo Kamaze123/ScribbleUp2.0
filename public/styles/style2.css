@@ -133,6 +133,57 @@
   text-decoration: underline;
 }
 
+.post-form  .divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  color: #000000;
+  font-size: 13px;
+  border: none !important;
+  background: none !important;
+}
+
+.post-form .divider::before,
+.post-form .divider::after {
+  content: "";
+  flex: 1;
+  height : 1px;
+  background-color: #000000;
+  border : none !important;
+}
+
+.post-form .divider span {
+  padding: 0 10px;
+}
+
+.oauth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.oauth-btn:hover {
+  background:  rgb(186, 186, 186);
+  border-color: #3a3a3a;
+}
+.oauth-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+
 /* Tablet */
 @media (max-width: 768px) {
   .post-form {
