@@ -158,18 +158,12 @@ app.use("/blog", express.static(path.join(__dirname, "blog")));
 app.use(express.static('public'));
 
 
-
 app.get("/", async (req, res)=>{
     
     try{
-      const cached = cache.get("blogs");
-
-      if (cached) return res.render("home", { blogLinks: cached });
-
-      const result = await pool.query("SELECT ...");
-      cache.set("blogs", result.rows);
-      res.render("home", { blogLinks: result.rows });
-      
+        const result = await pool.query('SELECT id, title, content, created_at, user_id, created_by FROM blog ORDER BY created_at DESC');
+        const blogs = result.rows;
+        res.render("home", { blogLinks: blogs });
     }catch(err){
         console.error("Error fetching blogs from database", err); 
         res.render("home", { blogLinks: [] });
