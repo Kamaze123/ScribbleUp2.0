@@ -4,7 +4,7 @@ Simple blog platform built with Node.js, Express and EJS.
 
 ## Live Demo
 
-- **Website:** [https://scribbleup.onrender.com]
+- **Website:** [https://scribbleup-0s2n.onrender.com]
 
 
 
