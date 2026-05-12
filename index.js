@@ -14,14 +14,14 @@ import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcrypt";
 import connectPgSimple from "connect-pg-simple";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import NodeCache from "node-cache";
 
 dotenv.config();
 
 const app = express();
-
 const PgSession = connectPgSimple(session);
-
 const { Pool } = pg;
+const cache = new NodeCache({stdTTL:60});
 
 console.log(process.env.DATABASE_URL);
 
@@ -158,12 +158,18 @@ app.use("/blog", express.static(path.join(__dirname, "blog")));
 app.use(express.static('public'));
 
 
+
 app.get("/", async (req, res)=>{
     
     try{
-        const result = await pool.query('SELECT id, title, content, created_at, user_id, created_by FROM blog ORDER BY created_at DESC');
-        const blogs = result.rows;
-        res.render("home", { blogLinks: blogs });
+      const cached = cache.get("blogs");
+
+      if (cached) return res.render("home", { blogLinks: cached });
+
+      const result = await pool.query("SELECT ...");
+      cache.set("blogs", result.rows);
+      res.render("home", { blogLinks: result.rows });
+      
     }catch(err){
         console.error("Error fetching blogs from database", err); 
         res.render("home", { blogLinks: [] });
@@ -297,3 +303,8 @@ app.get("/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => res.redirect("/")
 );
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render("error", { message: "Something went wrong" });
+});
