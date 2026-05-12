@@ -24,12 +24,8 @@ const PgSession = connectPgSimple(session);
 const { Pool } = pg;
 
 const pool = new Pool({
-    user: process.env.PG_USER,
-    host: process.env.PG_HOST,
-    port: process.env.PG_PORT,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    max : 20,
+    connectionString: process.env.DATABASE_URL,
+    ssl : {rejectUnauthorized: false}
 });
 
 
