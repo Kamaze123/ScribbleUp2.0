@@ -136,9 +136,12 @@
 .post-form  .divider {
   display: flex;
   align-items: center;
-  margin: 20px 0;
-  color: #000000;
-  font-size: 13px;
+  margin: 24px 0;
+  color: #777777;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   border: none !important;
   background: none !important;
 }
@@ -148,7 +151,7 @@
   content: "";
   flex: 1;
   height : 1px;
-  background-color: #000000;
+  background-color: #e5e5e5;
   border : none !important;
 }
 
@@ -160,23 +163,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   padding: 12px;
-  border: 1px solid #cccccc;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
-  background: #fff;
-  color: #333;
+  background: #ffffff;
+  color: #333333;
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s, border-color 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
 }
 .oauth-btn:hover {
-  background:  rgb(186, 186, 186);
-  border-color: #3a3a3a;
+  background:  #f9f9f9;
+  border-color: #adadad;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.oauth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 .oauth-btn img {
   width: 20px;
